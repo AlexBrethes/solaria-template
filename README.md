@@ -13,6 +13,7 @@ Template de projet réutilisable pour tous les projets Solaria Advisory. Inclut 
 
 ```
 ├── CLAUDE.md                    # Conventions projet (à personnaliser)
+├── .editorconfig                # Formatage universel (indentation, line endings)
 ├── .claude/
 │   ├── settings.json            # Permissions et hooks de sécurité
 │   ├── commands/                # Slash commands Claude Code
