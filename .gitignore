@@ -54,6 +54,9 @@ out/
 .next/
 .nuxt/
 
+# === Claude Code ===
+.claude/settings.local.json
+
 # === Environnement ===
 .env
 .env.*
