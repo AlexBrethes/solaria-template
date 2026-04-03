@@ -1,0 +1,69 @@
+# === OS ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# === Éditeurs ===
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn/cache
+.pnp.*
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# === Java / Kotlin ===
+*.class
+*.jar
+target/
+
+# === Go ===
+bin/
+
+# === Rust ===
+target/
+Cargo.lock
+
+# === Build / Output ===
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# === Environnement ===
+.env
+.env.*
+!.env.example
+
+# === Logs ===
+*.log
+logs/
+
+# === Coverage ===
+coverage/
+htmlcov/
+.coverage
