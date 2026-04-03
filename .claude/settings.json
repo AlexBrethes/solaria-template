@@ -1,0 +1,85 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Grep(*)",
+      "Glob(*)",
+      "WebSearch(*)",
+      "WebFetch(*)",
+      "Bash(*)",
+      "Skill(*)"
+    ],
+    "deny": [
+      "Bash(rmdir *)",
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(su -*)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git push origin --delete *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "Bash(git checkout . *)",
+      "Bash(git checkout -- . *)",
+      "Bash(git restore . *)",
+      "Bash(git branch -D *)",
+      "Bash(dd if=*)",
+      "Bash(mkfs*)",
+      "Bash(shutdown *)",
+      "Bash(reboot *)",
+      "Bash(halt *)",
+      "Bash(poweroff *)",
+      "Bash(chmod 777 *)",
+      "Bash(chown *)",
+      "Bash(shred *)",
+      "Bash(truncate *)",
+      "Bash(kill -9 *)",
+      "Bash(killall *)",
+      "Read(*.env)",
+      "Read(.env*)",
+      "Read(*/.env)",
+      "Read(*/.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*id_rsa*)",
+      "Edit(*.env)",
+      "Edit(.env*)",
+      "Edit(*/.env)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Write(*.env)",
+      "Write(.env*)",
+      "Write(*/.env)",
+      "Write(**/.env)",
+      "Write(**/.env.*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'CMD=$(echo \"$TOOL_INPUT\" | jq -r \".command // empty\" 2>/dev/null); if [ -z \"$CMD\" ]; then exit 0; fi; if echo \"$CMD\" | grep -qE \"(\\bsudo\\s+|\\bsu\\s+|\\bdd\\s+if=|\\bmkfs|\\bshred|\\btruncate|\\bchmod\\s+777|\\bchown\\s+)\"; then echo \"BLOQUE: Commande destructive: $CMD\" >&2; exit 2; fi; if echo \"$CMD\" | grep -qE \"(curl|wget).*\\|\\s*(sh|bash|zsh)\"; then echo \"BLOQUE: Pipe-to-shell detecte: $CMD\" >&2; exit 2; fi; if echo \"$CMD\" | grep -qE \"git\\s+push\\s+(--force|-f)|git\\s+reset\\s+--hard|git\\s+clean|git\\s+checkout\\s+\\.|git\\s+restore\\s+\\.\"; then echo \"BLOQUE: Operation git destructive: $CMD\" >&2; exit 2; fi; exit 0'"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'CMD=$(echo \"$TOOL_INPUT\" | jq -r \".command // empty\" 2>/dev/null); if [ -z \"$CMD\" ]; then exit 0; fi; if echo \"$CMD\" | grep -qE \"^git\\s+push\"; then echo \"ATTENTION: Push vers le remote: $CMD\"; fi; if echo \"$CMD\" | grep -qE \"^git\\s+(merge|rebase)\"; then echo \"ATTENTION: Operation de branche: $CMD\"; fi; if echo \"$CMD\" | grep -qE \"\\brm\\b\"; then echo \"ATTENTION: Suppression detectee: $CMD\"; fi; exit 0'"
+          }
+        ]
+      }
+    ]
+  }
+}
